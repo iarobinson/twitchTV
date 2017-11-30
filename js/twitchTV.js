@@ -104,11 +104,30 @@ var dataSimulation = [
   }
 ];
 
-var apiData = 'HUZZAH';
-
 $(document).ready(function() {
-  $('button').click(function() {
-    console.log(dataSimulation)
-    $('p').text(dataSimulation);
+  function buttonClicked(button) {
+    $(this).children().remove();
+    for (var i = 0; i < dataSimulation.length; i += 1) {
+      var liveStreams = dataSimulation[i].display_name;
+      
+      if (liveStreams) {
+        $('.twitchInfo').append("<li>" + liveStreams + "</li>");
+      }
+    }
+  }
+  
+  $('.live').on('click', function() {
+    console.log('live button clicked');
+    buttonClicked('display_name');
+  });
+  
+  $('.all').on('click', function() {
+    console.log('all button clicked');
+    buttonClicked('display_name');
+  });
+  
+  $('.offline').on('click', function() {
+    console.log('offline button clicked');
+    buttonClicked('display_name');
   });
 });
