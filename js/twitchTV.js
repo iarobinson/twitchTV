@@ -105,6 +105,11 @@ var dataSimulation = [
 ];
 
 $(document).ready(function() {
+  
+  $.getJSON('https://api.twitch.tv/kraken/streams/freecodecamp?callback=?', function(data) {
+    console.log(data);
+  });
+
   function buttonClicked(button) {
     $(this).children().remove();
     for (var i = 0; i < dataSimulation.length; i += 1) {

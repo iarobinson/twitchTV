@@ -1,8 +1,10 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <title>Twitch TV API Project</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/twitchTV.css">
     <script src="js/twitchTV.js"></script>
   </head>
@@ -13,5 +15,18 @@
     <button class="live">Live</button>
     <button class="offline">Offline</button>
     <div class="twitchInfo"></div>
+    <div class="player"></div>
   </body>
+
+  <!-- <script>
+    window.onload = function() {
+      Crafty.init();
+      // A blue block, controlled by arrow keys
+      var player = Crafty.e("2D, Canvas, Color, Fourway")
+          .attr({x:100, y:100, w:50, h:50})
+          .color("blue")
+          .fourway(3);
+      };
+      $('.player').append(player);
+  </script> -->
 </html>
