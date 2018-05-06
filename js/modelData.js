@@ -1,8 +1,6 @@
 // console.log("This project is here to demonstrate front end development capacities");
 // console.log("Therefore I'll be skipping the API integration and using model data contained in this file.");
 
-var twitchStreamers = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
-
 var dataSimulation = [{
     "stream": {
       "mature": false,
