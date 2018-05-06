@@ -13,16 +13,17 @@ function init() {
   liveUsersButton.onclick = displayLiveUsers;
   offlineUsersButton.onclick = displayOfflineUsers;
 
-  var xhttp = new XMLHttpRequest();
+  var url = "https://wind-bow.gomix.me/twitch-api";
+  var request = new XMLHttpRequest();
 
-  xhttp.onreadystatechange = function() {
+  var xmlResult = request.open("GET", url + "/epicenter_en1");
+
+  request.onload = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("demo").innerHTML = xhttp.responseText;
     }
   };
-
-  var xmlResult = xhttp.open("GET", "filename", true);
-  console.log(xmlResult);
+  console.log(xmlResult, "<- xmlResult");
 }
 
 function displayAllUsers() {
