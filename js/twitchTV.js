@@ -1,7 +1,6 @@
 var allUsersButton, liveUsersButton, offlineUsersButton;
 
 window.onload = init;
-
 function init() {
   // Assign variables to each button DOM element
   allUsersButton = document.getElementById("allUsers");
@@ -13,21 +12,26 @@ function init() {
   liveUsersButton.onclick = displayLiveUsers;
   offlineUsersButton.onclick = displayOfflineUsers;
 
-  var url = "https://wind-bow.gomix.me/twitch-api";
-  var request = new XMLHttpRequest();
-
-  var xmlResult = request.open("GET", url + "/epicenter_en1");
-
-  request.onload = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("demo").innerHTML = xhttp.responseText;
-    }
-  };
-  console.log(xmlResult, "<- xmlResult");
+  requestTwitchUser("epicenter_en1");
 }
 
-function displayAllUsers() {
-  console.log("All Users Stuff");
+// Pulls data from twitch API based on userName
+function requestTwitchUser(userName) {
+  var url = "https://wind-bow.glitch.me/twitch-api/streams/" + userName;
+  var request = new XMLHttpRequest();
+  request.onload = function () {
+    if (request.status == 200) {
+      displayAllUsers(request.responseText);
+    }
+  };
+  request.open("GET", url);
+  request.send(null);
+}
+
+function displayAllUsers(content) {
+  console.log(content, "<-content", typeof content, "<-typeof");
+  var hello = JSON.parse(content);
+  console.log(hello.stream.game, "online? ->", hello.steam == true);
 }
 
 function displayLiveUsers() {
