@@ -1,59 +1,70 @@
-var allUsersButton, liveUsersButton, offlineUsersButton;
+var allButton, liveButton, offlineButton;
 var numRows, numCells;
-var twitchStreamers = ["Battlerite", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+var twitchStreamers = ["btssmash", "Battlerite", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp"];
 var twitchData = {};
+var listOfflineOnly = true;
+var listOnlineOnly = true;
+var resultsObject, onOfforAll;
 
 window.onload = init;
 function init() {
   // Assign variables to each button DOM element
-  allUsersButton = document.getElementById("allUsers");
-  liveUsersButton = document.getElementById("liveUsers");
-  offlineUsersButton = document.getElementById("offlineUsers");
+  allButton = document.getElementById("allUsers");
+  liveButton = document.getElementById("liveUsers");
+  offlineButton = document.getElementById("offlineUsers");
 
   // Assign functions to click events
-  allUsersButton.onclick = displayAllUsers;
-  liveUsersButton.onclick = displayLiveUsers;
-  offlineUsersButton.onclick = displayOfflineUsers;
+  allButton.onclick = allUsersButton;
+  liveButton.onclick = onlineUsersButton;
+  offlineButton.onclick = offlineUsersButton;
 
-  twitchStreamers.forEach(function(streamer) {
-    requestTwitchUser(streamer);
+  // By default, the page loads with all users listed
+  getAllStreamersData(twitchStreamers, onOfforAll);
+}
+
+// Gets info for all streamers on the twitchStreamers list
+function getAllStreamersData(streamerList, onOfforAll) {
+  streamerList.forEach(function(streamer) {
+    var url = "https://wind-bow.glitch.me/twitch-api/streams/" + streamer;
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+      if (request.status == 200) {
+        resultsObject = JSON.parse(request.responseText);
+        if (resultsObject.stream == null && onOfforAll != "onlineOnly") {
+          displayOfflineUsers(resultsObject, streamer);
+        } else if (onOfforAll != "offlineOnly") {
+          displayOnlineStreamers(resultsObject);
+        }
+      }
+    };
+    request.open("GET", url);
+    request.send(null);
   });
 }
 
-// Pulls data from twitch API based on userName
-function requestTwitchUser(userName) {
-  var url = "https://wind-bow.glitch.me/twitch-api/streams/" + userName;
-  var request = new XMLHttpRequest();
-  request.onload = function () {
-    if (request.status == 200) {
-      display(request.responseText);
-    }
-  };
-  request.open("GET", url);
-  request.send(null);
-}
-
-function display(apiResults) {
-  var resultsObject = JSON.parse(apiResults);
-  console.log(resultsObject);
-  var l = displayLogo(resultsObject);
-  var n = displayName(resultsObject);
-  var s = displayStatus(resultsObject);
-  var f = displayFollowers(resultsObject);
+function displayOnlineStreamers(resultsObject) {
+  var l = injectLogo(resultsObject);
+  var n = injectName(resultsObject);
+  var s = injectStatus(resultsObject);
+  var f = injectFollowers(resultsObject);
   addRow(l, n, s, f);
 }
 
-function displayLogo(resultsObject) {
+function displayOfflineUsers(resultsObject, userName) {
+  var offlineImage = "<img src='offline.png' height='50px' width='50px'>";
+  addRow(offlineImage, userName, "Offline", "Unknown");
+}
+
+// Helper functions for injecting API data to DOM
+function injectLogo(resultsObject) {
   // Return logo formatted to fit in cell
   return "<img src='" + resultsObject.stream.channel.logo + "' height='50px' width='50px'>";
 }
-
-function displayName(resultsObject) {
+function injectName(resultsObject) {
   // Return display name formatted to fit in cell
   return resultsObject.stream.channel.display_name;
 }
-
-function displayStatus(resultsObject) {
+function injectStatus(resultsObject) {
   // Return online or offline depending on if they are streaming
   if (resultsObject.stream == null) {
     return "Offline";
@@ -61,22 +72,24 @@ function displayStatus(resultsObject) {
     return "Online";
   }
 }
-
-function displayFollowers(resultsObject) {
+function injectFollowers(resultsObject) {
   // Add follower info to table row
   return resultsObject.stream.channel.followers;
 }
 
-function displayAllUsers(content) {
-  console.log("displayAllUsers");
+// Functions that happen when user clicks
+function allUsersButton() {
+  clearTable();
+  getAllStreamersData(twitchStreamers);
+}
+function onlineUsersButton() {
+  clearTable();
+  getAllStreamersData(twitchStreamers, "onlineOnly");
 }
 
-function displayLiveUsers() {
-  console.log("Live Users Stuff");
-}
-
-function displayOfflineUsers() {
-  console.log("Offline Users Stuff");
+function offlineUsersButton() {
+  clearTable();
+  getAllStreamersData(twitchStreamers, "offlineOnly");
 }
 
 function addRow(c1, c2, c3, c4) {
@@ -85,11 +98,9 @@ function addRow(c1, c2, c3, c4) {
 
   // Increment with i based on growing row length
   var rowCount = table.rows.length;
-  console.log(rowCount, "<-rowCount");
 
   // Create new row based on where we are with rowCount
   var row = table.insertRow(rowCount);
-  console.log(rowCount, "<- rowCount ", row, " <- row");
 
   // Insert three cells to the new row
   var cell1 = row.insertCell(0);
@@ -102,4 +113,9 @@ function addRow(c1, c2, c3, c4) {
   cell2.innerHTML = c2;
   cell3.innerHTML = c3;
   cell4.innerHTML = c4;
+}
+
+function clearTable() {
+  var table = document.getElementById("twitchUserDisplay");
+  table.innerHTML = "<tr><th>Logo</th><th>Name</th><th>Status</th><th>Follower Info</th></tr><tr><td id='logoSpace'></td><td id='nameSpace'></td><td id='statusSpace'></td><td id='followerSpace'></td></tr>";
 }
