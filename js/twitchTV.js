@@ -1,8 +1,8 @@
-var allButton, liveButton, offlineButton;
-var numRows, numCells;
+// Global API results, buttons and live/offline selection criteria
+var allButton, liveButton, offlineButton, resultsObject, onOfforAll;
+
+// Default list of Twtich usernames - Also array variable for user generated names
 var twitchStreamers = ["freecodecamp", "btssmash", "Battlerite", "ESL_SC2", "OgamingSC2"];
-var twitchData = {};
-var resultsObject, onOfforAll;
 
 window.onload = init;
 function init() {
@@ -42,6 +42,7 @@ function getAllStreamersData(streamerList, onOfforAll) {
   });
 }
 
+// Display processes for online vs. offline twitchers
 function displayOnlineStreamers(resultsObject) {
   var l = injectLogo(resultsObject);
   var n = injectName(resultsObject);
@@ -49,15 +50,14 @@ function displayOnlineStreamers(resultsObject) {
   var f = injectFollowers(resultsObject);
   addRow(l, n, s, f);
 }
-
 function displayOfflineUsers(resultsObject, userName) {
   var userNameHTML = formatted(userName);
   var offlineImage = "<img src='offline.png' height='50px' width='50px'>";
-  var offlineFollowers =
+  var offlineFollowers = "offlineFollowers";
   addRow(offlineImage, userNameHTML, "Offline", "Unknown");
 }
 
-// Helper functions for injecting API data to DOM
+// Formatting API data to DOM
 function injectLogo(resultsObject) {
   // Return logo formatted to fit in cell
   return "<img src='" + resultsObject.stream.channel.logo + "' height='50px' width='50px'>";
@@ -89,12 +89,12 @@ function onlineUsersButton() {
   clearTable();
   getAllStreamersData(twitchStreamers, "onlineOnly");
 }
-
 function offlineUsersButton() {
   clearTable();
   getAllStreamersData(twitchStreamers, "offlineOnly");
 }
 
+// Table management functions
 function addRow(c1, c2, c3, c4) {
   // Assign the DOM table to a JS variable
   var table = document.getElementById("twitchUserDisplay");
@@ -117,16 +117,17 @@ function addRow(c1, c2, c3, c4) {
   cell3.innerHTML = c3;
   cell4.innerHTML = c4;
 }
-
 function clearTable() {
   var table = document.getElementById("twitchUserDisplay");
   table.innerHTML = "<tr><th>Logo</th><th>Name</th><th>Status</th><th>Follower Info</th></tr><tr><td id='logoSpace'></td><td id='nameSpace'></td><td id='statusSpace'></td><td id='followerSpace'></td></tr>";
 }
 
+// Formats usernames with hyperlink text
 function formatted(dN) {
   return "<a href='https://www.twitch.tv/" + dN + "' target='_blank' >" + dN + "</a>";
 }
 
+// Manages putting users on or taking them off the user array based on user input
 function addOrDeleteTwitchers() {
   var userInput = document.getElementById("userTwitcher").value;
 
