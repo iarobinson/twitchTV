@@ -62,14 +62,15 @@ function injectLogo(resultsObject) {
 }
 function injectName(resultsObject) {
   // Return display name formatted to fit in cell
-  return resultsObject.stream.channel.display_name;
+  var dispName = resultsObject.stream.channel.display_name;
+  return "<a href='https://www.twitch.tv/" + dispName + "' target='_blank' >" + dispName + "</a>";
 }
 function injectStatus(resultsObject) {
   // Return online or offline depending on if they are streaming
   if (resultsObject.stream == null) {
     return "Offline";
   } else {
-    return "Online";
+    return resultsObject.stream.channel.status;
   }
 }
 function injectFollowers(resultsObject) {
