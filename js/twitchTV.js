@@ -53,7 +53,6 @@ function displayOnlineStreamers(resultsObject) {
 function displayOfflineUsers(resultsObject, userName) {
   var userNameHTML = formatted(userName);
   var offlineImage = "<img src='offline.png' height='50px' width='50px'>";
-  var offlineFollowers = "offlineFollowers";
   addRow(offlineImage, userNameHTML, "Offline", "Unknown");
 }
 

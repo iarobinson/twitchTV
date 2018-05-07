@@ -11,11 +11,9 @@ There is a fundamental problem with the logic behind pulling the data from the A
 
 - Improvements
 
-I found the following API URL which allows us to get follower data:
+A nice feature would be to get follower information from twitchers who are offline. Currently, the program displays 'unknown' for offline users. Get follower data like this:
 https://wind-bow.glitch.me/twitch-api/channels/freecodecamp/follows
 
 Right now the add/remove user interface is case sensitive so user must type user name exactly as it appears in the name column. It would be better if it wasn't case sensitive.
 
-Style input box a bit more
-
-Bonus: If the user could specify their list of twitchTV user IDs, the application might actually have value for someone.
+The project could do with a rework of it's style.
