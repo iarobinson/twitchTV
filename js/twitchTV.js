@@ -1,9 +1,7 @@
 var allButton, liveButton, offlineButton;
 var numRows, numCells;
-var twitchStreamers = ["btssmash", "Battlerite", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp"];
+var twitchStreamers = ["freecodecamp", "btssmash", "Battlerite", "ESL_SC2", "OgamingSC2"];
 var twitchData = {};
-var listOfflineOnly = true;
-var listOnlineOnly = true;
 var resultsObject, onOfforAll;
 
 window.onload = init;
@@ -12,11 +10,13 @@ function init() {
   allButton = document.getElementById("allUsers");
   liveButton = document.getElementById("liveUsers");
   offlineButton = document.getElementById("offlineUsers");
+  addDeleteButton = document.getElementById("userChange");
 
   // Assign functions to click events
   allButton.onclick = allUsersButton;
   liveButton.onclick = onlineUsersButton;
   offlineButton.onclick = offlineUsersButton;
+  addDeleteButton.onclick = addOrDeleteTwitchers;
 
   // By default, the page loads with all users listed
   getAllStreamersData(twitchStreamers, onOfforAll);
@@ -53,6 +53,7 @@ function displayOnlineStreamers(resultsObject) {
 function displayOfflineUsers(resultsObject, userName) {
   var userNameHTML = formatted(userName);
   var offlineImage = "<img src='offline.png' height='50px' width='50px'>";
+  var offlineFollowers =
   addRow(offlineImage, userNameHTML, "Offline", "Unknown");
 }
 
@@ -124,4 +125,22 @@ function clearTable() {
 
 function formatted(dN) {
   return "<a href='https://www.twitch.tv/" + dN + "' target='_blank' >" + dN + "</a>";
+}
+
+function addOrDeleteTwitchers() {
+  var userInput = document.getElementById("userTwitcher").value;
+
+  if (twitchStreamers.indexOf(userInput) === -1) {
+    twitchStreamers.push(userInput);
+    clearTable();
+    getAllStreamersData(twitchStreamers, onOfforAll);
+  } else {
+    // console.log("remove user " + typeof userInput + " <- typeof userInput");
+    var idx = twitchStreamers.indexOf(userInput);
+    console.log(twitchStreamers, "<- twitchStreamers before");
+    twitchStreamers.splice(idx, 1);
+    console.log(twitchStreamers, "<- twitchStreamers after");
+    clearTable();
+    getAllStreamersData(twitchStreamers, onOfforAll);
+  }
 }

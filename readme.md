@@ -11,8 +11,11 @@ There is a fundamental problem with the logic behind pulling the data from the A
 
 - Improvements
 
-Link twitcher's status output to the twitchers Twitch.tv channel so if the user clicks the link, they are sent to that twitchTV page.
-
 Make it so the user can see additional details about what the twitcher is streaming.
+
+I found the following API URL which allows us to get follower data:
+https://wind-bow.glitch.me/twitch-api/channels/freecodecamp/follows
+
+Right now the add/remove user interface is case sensitive so user must type user name exactly as it appears in the name column. It would be better if it wasn't case sensitive. 
 
 Bonus: If the user could specify their list of twitchTV user IDs, the application might actually have value for someone.
