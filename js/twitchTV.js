@@ -51,8 +51,9 @@ function displayOnlineStreamers(resultsObject) {
 }
 
 function displayOfflineUsers(resultsObject, userName) {
+  var userNameHTML = formatted(userName);
   var offlineImage = "<img src='offline.png' height='50px' width='50px'>";
-  addRow(offlineImage, userName, "Offline", "Unknown");
+  addRow(offlineImage, userNameHTML, "Offline", "Unknown");
 }
 
 // Helper functions for injecting API data to DOM
@@ -63,7 +64,7 @@ function injectLogo(resultsObject) {
 function injectName(resultsObject) {
   // Return display name formatted to fit in cell
   var dispName = resultsObject.stream.channel.display_name;
-  return "<a href='https://www.twitch.tv/" + dispName + "' target='_blank' >" + dispName + "</a>";
+  return formatted(dispName);
 }
 function injectStatus(resultsObject) {
   // Return online or offline depending on if they are streaming
@@ -119,4 +120,8 @@ function addRow(c1, c2, c3, c4) {
 function clearTable() {
   var table = document.getElementById("twitchUserDisplay");
   table.innerHTML = "<tr><th>Logo</th><th>Name</th><th>Status</th><th>Follower Info</th></tr><tr><td id='logoSpace'></td><td id='nameSpace'></td><td id='statusSpace'></td><td id='followerSpace'></td></tr>";
+}
+
+function formatted(dN) {
+  return "<a href='https://www.twitch.tv/" + dN + "' target='_blank' >" + dN + "</a>";
 }
